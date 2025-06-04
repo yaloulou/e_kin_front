@@ -12,10 +12,12 @@ export default defineConfig({
     },
     plugins: [
         vue(),
+        
         Components({
             resolvers: [PrimeVueResolver()]
         })
     ],
+    base:'/',
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))
