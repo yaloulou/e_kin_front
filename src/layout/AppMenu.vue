@@ -40,7 +40,7 @@ const model = ref([
                 icon: 'pi pi-fw pi-globe',
                 to: '/landing'
             }, */
-            {
+            /* {
                 label: 'Auth',
                 icon: 'pi pi-fw pi-user',
                 items: [
@@ -60,7 +60,7 @@ const model = ref([
                         to: '/auth/access'
                     }
                 ]
-            },
+            }, */
             /* {
                 label: 'Crud',
                 icon: 'pi pi-fw pi-pencil',
