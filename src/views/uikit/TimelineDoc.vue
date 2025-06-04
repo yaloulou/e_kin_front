@@ -1,159 +1,128 @@
-<script setup>
-import { ref } from 'vue';
-
-const events = ref([
-    {
-        status: 'Ordered',
-        date: '15/10/2020 10:30',
-        icon: 'pi pi-shopping-cart',
-        color: '#9C27B0',
-        image: 'game-controller.jpg'
-    },
-    {
-        status: 'Processing',
-        date: '15/10/2020 14:00',
-        icon: 'pi pi-cog',
-        color: '#673AB7'
-    },
-    {
-        status: 'Shipped',
-        date: '15/10/2020 16:15',
-        icon: 'pi pi-envelope',
-        color: '#FF9800'
-    },
-    {
-        status: 'Delivered',
-        date: '16/10/2020 10:00',
-        icon: 'pi pi-check',
-        color: '#607D8B'
-    }
-]);
-
-const horizontalEvents = ref(['2020', '2021', '2022', '2023']);
-</script>
-
 <template>
-    <div class="grid grid-cols-12 gap-8">
-        <div class="col-span-6">
-            <div class="card">
-                <div class="font-semibold text-xl mb-4">Left Align</div>
-                <Timeline :value="events">
-                    <template #content="slotProps">
-                        {{ slotProps.item.status }}
-                    </template>
-                </Timeline>
-            </div>
-        </div>
-        <div class="col-span-6">
-            <div class="card">
-                <div class="font-semibold text-xl mb-4">Right Align</div>
-                <Timeline :value="events" align="right">
-                    <template #content="slotProps">
-                        {{ slotProps.item.status }}
-                    </template>
-                </Timeline>
-            </div>
-        </div>
-        <div class="col-span-6">
-            <div class="card">
-                <div class="font-semibold text-xl mb-4">Alternate Align</div>
-                <Timeline :value="events" align="alternate">
-                    <template #content="slotProps">
-                        {{ slotProps.item.status }}
-                    </template>
-                </Timeline>
-            </div>
-        </div>
-        <div class="col-span-6">
-            <div class="card">
-                <div class="font-semibold text-xl mb-4">Opposite Content</div>
-                <Timeline :value="events">
-                    <template #opposite="slotProps">
-                        <small class="text-muted-color">{{ slotProps.item.date }}</small>
-                    </template>
-                    <template #content="slotProps">
-                        {{ slotProps.item.status }}
-                    </template>
-                </Timeline>
-            </div>
-        </div>
-        <div class="col-span-full">
-            <div class="card">
-                <div class="font-semibold text-xl mb-4">Templating</div>
-                <Timeline :value="events" align="alternate" class="customized-timeline">
-                    <template #marker="slotProps">
-                        <span class="flex w-8 h-8 items-center justify-center text-white rounded-full z-10 shadow-sm" :style="{ backgroundColor: slotProps.item.color }">
-                            <i :class="slotProps.item.icon"></i>
-                        </span>
-                    </template>
-                    <template #content="slotProps">
-                        <Card class="mt-4">
-                            <template #title>
-                                {{ slotProps.item.status }}
-                            </template>
-                            <template #subtitle>
-                                {{ slotProps.item.date }}
-                            </template>
-                            <template #content>
-                                <img v-if="slotProps.item.image" :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.item.image}`" :alt="slotProps.item.name" width="200" class="shadow-sm" />
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse,
-                                    cupiditate neque quas!
-                                </p>
-                                <Button label="Read more" text></Button>
-                            </template>
-                        </Card>
-                    </template>
-                </Timeline>
-            </div>
-        </div>
-        <div class="col-span-full">
-            <div class="card">
-                <div class="font-semibold text-xl mb-4">Horizontal</div>
-                <div class="font-semibold mb-2">Top Align</div>
-                <Timeline :value="horizontalEvents" layout="horizontal" align="top">
-                    <template #content="slotProps">
-                        {{ slotProps.item }}
-                    </template>
-                </Timeline>
+  <div class="card p-6">
+    <h1 class="text-2xl font-bold mb-4">Liste des Parcelles</h1>
 
-                <div class="font-semibold mt-4 mb-2">Bottom Align</div>
-                <Timeline :value="horizontalEvents" layout="horizontal" align="bottom">
-                    <template #content="slotProps">
-                        {{ slotProps.item }}
-                    </template>
-                </Timeline>
+    <DataTable :value="parcelles" :paginator="true" :rows="10"
+               :rowsPerPageOptions="[5, 10, 20, 50]" responsiveLayout="scroll"
+               stripedRows class="p-datatable-gridlines">
 
-                <div class="font-semibold mt-4 mb-2">Alternate Align</div>
-                <Timeline :value="horizontalEvents" layout="horizontal" align="alternate">
-                    <template #opposite> &nbsp; </template>
-                    <template #content="slotProps">
-                        {{ slotProps.item }}
-                    </template>
-                </Timeline>
-            </div>
-        </div>
-    </div>
+      <Column field="proprietaire.nom" header="Propriétaire" :sortable="true">
+        <template #body="slotProps">
+          {{ slotProps.data.proprietaire.prenom }} {{ slotProps.data.proprietaire.nom }}
+        </template>
+      </Column>
+
+      <Column header="Contact">
+        <template #body="slotProps">
+          📞 {{ slotProps.data.proprietaire.telephone }}<br />
+          ✉️ {{ slotProps.data.proprietaire.email }}
+        </template>
+      </Column>
+
+      <Column header="Adresse">
+        <template #body="slotProps">
+          {{ slotProps.data.adresse.avenue }}, {{ slotProps.data.adresse.quartier }},
+          {{ slotProps.data.adresse.commune }}, {{ slotProps.data.adresse.ville }}
+        </template>
+      </Column>
+
+      <Column field="taxes[0].type" header="Type Taxe" :sortable="true"></Column>
+
+      <Column field="taxes[0].montant" header="Montant" :sortable="true">
+        <template #body="slotProps">
+          {{ formatCurrency(slotProps.data.taxes[0].montant) }}
+        </template>
+      </Column>
+
+      <Column field="taxes[0].periode" header="Période" :sortable="true"></Column>
+
+      <Column field="taxes[0].status" header="Statut" :sortable="true">
+        <template #body="slotProps">
+          <Tag :value="slotProps.data.taxes[0].status" :severity="getStatusSeverity(slotProps.data.taxes[0].status)"></Tag>
+        </template>
+      </Column>
+
+    </DataTable>
+  </div>
 </template>
 
-<style lang="scss" scoped>
-@media screen and (max-width: 960px) {
-    ::v-deep(.customized-timeline) {
-        .p-timeline-event:nth-child(even) {
-            flex-direction: row !important;
+<script>
+import axios from 'axios';
+import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
+import Tag from 'primevue/tag'; // Import the Tag component for status display
 
-            .p-timeline-event-content {
-                text-align: left !important;
+export default {
+  name: "ParcellesTable",
+  components: {
+    DataTable,
+    Column,
+    Tag
+  },
+  data() {
+    return {
+      parcelles: [],
+    };
+  },
+  mounted() {
+    this.fetchParcelles();
+  },
+  methods: {
+    fetchParcelles() {
+      axios
+        .get("https://plankton-app-fjjah.ondigitalocean.app/parcelles/parcelles_details")
+        .then((response) => {
+          this.parcelles = response.data;
+        })
+        .catch((error) => {
+          console.error("Erreur lors du chargement des données :", error);
+          // Fallback data for demonstration if API fails
+          this.parcelles = [
+            {
+              "id": "P-001",
+              "proprietaire": { "nom": "Kalala", "prenom": "Christophe", "telephone": "0812345678", "email": "christophe@example.com" },
+              "adresse": { "avenue": "Home", "quartier": "Jolie Park", "commune": "Ngaliema", "ville": "Kinshasa" },
+              "dateEnregistrement": "2025-06-01T10:00:00.000Z",
+              "taxes": [ { "type": "foncière", "montant": 500, "periode": "2025", "status": "En attente", "datePaiement": null } ]
+            },
+            {
+              "id": "P-002",
+              "proprietaire": { "nom": "Nsimba", "prenom": "Isabella", "telephone": "0823456789", "email": "isabella@example.com" },
+              "adresse": { "avenue": "Mboma", "quartier": "LDK", "commune": "N'Sele", "ville": "Kinshasa" },
+              "dateEnregistrement": "2025-05-28T15:30:00.000Z",
+              "taxes": [ { "type": "foncière", "montant": 500, "periode": "2024", "status": "Payée", "datePaiement": "2025-05-29T11:00:00.000Z" } ]
+            },
+            {
+              "id": "P-003",
+              "proprietaire": { "nom": "Mabiala", "prenom": "Didier", "telephone": "0856789012", "email": "didier@example.com" },
+              "adresse": { "avenue": "Wangata", "quartier": "Centre Ville", "commune": "Gombe", "ville": "Kinshasa" },
+              "dateEnregistrement": "2025-05-20T09:00:00.000Z",
+              "taxes": [ { "type": "foncière", "montant": 750, "periode": "2025", "status": "En retard", "datePaiement": null } ]
             }
-        }
-
-        .p-timeline-event-opposite {
-            flex: 0;
-        }
-
-        .p-card {
-            margin-top: 1rem;
-        }
+          ];
+        });
+    },
+    formatCurrency(value) {
+      if (value === null || value === undefined) return '0 CDF';
+      return value.toLocaleString('fr-CD', { style: 'currency', currency: 'CDF', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    },
+    getStatusSeverity(status) {
+      switch (status) {
+        case 'Payée':
+          return 'success';
+        case 'En attente':
+          return 'warning';
+        case 'En retard':
+          return 'danger';
+        default:
+          return 'info'; // Default severity
+      }
     }
-}
+  },
+};
+</script>
+
+<style scoped>
+/* PrimeVue will handle most of the styling. You generally won't need these specific table styles anymore. */
+/* You can remove or keep them if they apply to other elements. */
 </style>
