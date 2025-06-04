@@ -8,13 +8,13 @@ const model = ref([
         label: 'Home',
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
     },
-    {
+    /* {
         label: 'Gestion',
         items: [
             { label: 'Parcelles', icon: 'pi pi-fw pi-table', to: '/uikit/table' },
 
 
-            /* { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
+            { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
             { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
             { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/uikit/button', class: 'rotated-icon' },
             { label: 'List', icon: 'pi pi-fw pi-list', to: '/uikit/list' },
@@ -27,7 +27,7 @@ const model = ref([
             { label: 'File', icon: 'pi pi-fw pi-file', to: '/uikit/file' },
             { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', to: '/uikit/charts' },
             { label: 'Timeline', icon: 'pi pi-fw pi-calendar', to: '/uikit/timeline' },
-            { label: 'Misc', icon: 'pi pi-fw pi-circle', to: '/uikit/misc' } */
+            { label: 'Misc', icon: 'pi pi-fw pi-circle', to: '/uikit/misc' }
         ]
     },
     {
@@ -35,12 +35,12 @@ const model = ref([
         icon: 'pi pi-fw pi-briefcase',
         to: '/pages',
         items: [
-           /*  {
+            {
                 label: 'Landing',
                 icon: 'pi pi-fw pi-globe',
                 to: '/landing'
-            }, */
-            /* {
+            },
+            {
                 label: 'Auth',
                 icon: 'pi pi-fw pi-user',
                 items: [
@@ -60,8 +60,8 @@ const model = ref([
                         to: '/auth/access'
                     }
                 ]
-            }, */
-            /* {
+            },
+            {
                 label: 'Crud',
                 icon: 'pi pi-fw pi-pencil',
                 to: '/pages/crud'
@@ -75,10 +75,10 @@ const model = ref([
                 label: 'Empty',
                 icon: 'pi pi-fw pi-circle-off',
                 to: '/pages/empty'
-            } */
+            }
         ]
     },
-    /* {
+    {
         label: 'Hierarchy',
         items: [
             {
